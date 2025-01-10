@@ -1,0 +1,47 @@
+// Top-level build file where you can add configuration options common to all sub-projects/modules.
+Properties properties = new Properties()
+File localProps = new File(rootDir.absolutePath, "local.properties")
+if (localProps.exists()) {
+    properties.load(localProps.newDataInputStream())
+} else {
+    println "local.properties not found"
+}
+
+buildscript {
+    ext {
+        buildToolsVersion = "33.0.0"
+        minSdkVersion = 23
+        compileSdkVersion = 33
+        targetSdkVersion = 33
+
+        // We use NDK 23 which has both M1 support and is the side-by-side NDK version from AGP.
+        ndkVersion = "23.1.7779620"
+        kotlin_version = "1.8.21" // Use the latest version
+    }
+    repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle")
+        classpath("com.facebook.react:react-native-gradle-plugin")
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+
+allprojects {
+      repositories {
+        google()
+        mavenCentral()
+        maven { url 'https://www.jitpack.io' }
+        maven {
+            url = uri("https://maven.pkg.github.com/trustwallet/wallet-core")
+            credentials {
+                username = properties['gpr.user'] ?: System.getenv("GITHUB_USER")
+                password = properties['gpr.key'] ?: System.getenv("GITHUB_TOKEN")
+            }
+        }
+    }
+}
+

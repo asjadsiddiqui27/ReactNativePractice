@@ -1,28 +1,29 @@
 package com.reactnativeplus;
 
-import com.facebook.react.bridge.NativeModule;
+import android.util.Base64;
+
+import com.facebook.react.bridge.Callback;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
-import com.facebook.react.bridge.Callback;
 
-import wallet.core.jni.HDWallet;
-import wallet.core.jni.PrivateKey;
-import wallet.core.jni.proto.Tron;
-import wallet.core.jni.AnyAddress;
-import wallet.core.jni.TronMessageSigner;
-
-import wallet.core.jni.proto.Common;
-import android.util.Base64;
-
-import okhttp3.*;
 import org.json.JSONObject;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import wallet.core.jni.PrivateKey;
+import wallet.core.jni.TronMessageSigner;
+import wallet.core.jni.proto.Tron;
 
 public class TronTransaction extends ReactContextBaseJavaModule {
 
     public TronTransaction(ReactApplicationContext reactContext) {
         super(reactContext);
         System.loadLibrary("TrustWalletCore");
+        performTransaction();
     }
 
     @Override
@@ -42,7 +43,6 @@ public class TronTransaction extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void trxTransactions() {
-        // try{
 
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -61,19 +61,10 @@ public class TronTransaction extends ReactContextBaseJavaModule {
                         .getJSONObject("raw_data")
                         .getLong("number");
 
-                String recipientAddress = "TWBkPVcYGXEKVZHQfGV7u8bwYyJaQ3PJs4"; // Replace with recipient's TRON address
-                String addressTRX = "TKbnY9ehgjqLdg8fWMPsaBiypkCoQemFxM"; // Replace with recipient's TRON address
-                long amount = 1000000; // Sending 100 TRX (1 TRX = 1,000,000 SUN)
-
-                Tron.TransferContract transfer = Tron.TransferContract.newBuilder()
-                        .setOwnerAddress(addressTRX)
-                        .setToAddress(recipientAddress)
-                        .setAmount(amount)
-                        .build();
-
-                System.out.println("Block Hash: " + latestBlockHash);
+                System.out.println(" " + latestBlockHash);
                 System.out.println("Block Number: " + latestBlockNumber);
-                System.out.println("transfer transfer: " + transfer);
+
+                TransferContract(latestBlockHash,latestBlockNumber);
 
             } else {
                 System.err.println("Failed to fetch block info: " + response.message());
@@ -82,6 +73,19 @@ public class TronTransaction extends ReactContextBaseJavaModule {
             e.printStackTrace();
         }
 
+    }
+
+    public void TransferContract(String latestBlockHash, long latestBlockNumber) {
+        String recipientAddress = "TWBkPVcYGXEKVZHQfGV7u8bwYyJaQ3PJs4"; // Replace with recipient's TRON address
+        String addressTRX = "TKbnY9ehgjqLdg8fWMPsaBiypkCoQemFxM"; // Replace with recipient's TRON address
+        long amount = 1000000; // Sending 100 TRX (1 TRX = 1,000,000 SUN)
+
+        Tron.TransferContract transfer = Tron.TransferContract.newBuilder()
+                .setOwnerAddress(addressTRX)
+                .setToAddress(recipientAddress)
+                .setAmount(amount)
+                .build();
+        System.out.println("transfer transfer: " + transfer);
     }
 
     @ReactMethod
@@ -175,6 +179,20 @@ public class TronTransaction extends ReactContextBaseJavaModule {
                     + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
+    }
+
+    public static void main(String[] args) {
+        // Create an instance of the class and call the method
+        System.out.println("Calling trxTransactions... inside inside");
+
+        TronTransaction transaction = new TronTransaction(null); // Passing null for ReactApplicationContext
+        transaction.performTransaction(); // Call the wrapper method
+    }
+
+    // Call trxTransactions from another method
+    public void performTransaction() {
+        System.out.println("Calling trxTransactions...");
+        trxTransactions(); // Call the method directly
     }
 
 }

@@ -42,8 +42,9 @@ const App = () => {
       // );
 
       const mnemonic = "lady attitude unaware region awake woman gain trim buddy cradle sorry brave";
+      const mnemonic2 =   "cart expect inner finger ugly wonder build region three inspire expose retreat"
       CreateWallet.generateKeysForAllBlockchains(
-        mnemonic,
+        mnemonic2,
         (result) => {
           console.log('Generated Keys and Addresses:', result);
           // const ethPriv='0x' + Buffer.from(decodeBase64(res?.ETH_privateKey)).toString('hex');
@@ -56,29 +57,29 @@ const App = () => {
         }
       );
 
-      TronTransaction.trxTransactions()
+      // TronTransaction.trxTransactions()
 
-      TronTransaction.signTransactionsTwo("TKbnY9ehgjqLdg8fWMPsaBiypkCoQemFxM",
-        "TAwU7FibPyvDyDGxovU7KqeztB5P28vTEW",
-        "d73ecf368a0f56eb79d79b3f15278a59cdc2175e5e5380269d6cd9a6dc1bf202", (serializedContract) => {
-          console.log('signTransaction:', serializedContract);
-
-
-          TronTransaction.signSerializedContract(
-            serializedContract,
-            "d73ecf368a0f56eb79d79b3f15278a59cdc2175e5e5380269d6cd9a6dc1bf202",
-            (signature) => {
-              console.log("Signature Hex:", signature);
-            },
-            (error) => {
-              console.error("Error Signing Contract:", error);
-            }
-          );
+      // TronTransaction.signTransactionsTwo("TKbnY9ehgjqLdg8fWMPsaBiypkCoQemFxM",
+      //   "TAwU7FibPyvDyDGxovU7KqeztB5P28vTEW",
+      //   "d73ecf368a0f56eb79d79b3f15278a59cdc2175e5e5380269d6cd9a6dc1bf202", (serializedContract) => {
+      //     console.log('signTransaction:', serializedContract);
 
 
-        }, (err) => {
-          console.log('signTransaction', err);
-        });
+      //     TronTransaction.signSerializedContract(
+      //       serializedContract,
+      //       "d73ecf368a0f56eb79d79b3f15278a59cdc2175e5e5380269d6cd9a6dc1bf202",
+      //       (signature) => {
+      //         console.log("Signature Hex:", signature);
+      //       },
+      //       (error) => {
+      //         console.error("Error Signing Contract:", error);
+      //       }
+      //     );
+
+
+      //   }, (err) => {
+      //     console.log('signTransaction', err);
+      //   });
 
     } catch (error) {
       console.error('Error:s', error);

@@ -67,6 +67,7 @@ public class CreateWallet extends ReactContextBaseJavaModule {
             CoinType coinXRP = CoinType.XRP;
             CoinType coinSui = CoinType.SUI;
             CoinType coinTron = CoinType.TRON;
+            CoinType coinDoge = CoinType.DOGECOIN;
 
 
             //*************************************  ETH  *******************************************// 
@@ -101,8 +102,8 @@ public class CreateWallet extends ReactContextBaseJavaModule {
             String addressTRX = wallet.getAddressForCoin(coinTron); // Tron address
             PrivateKey privateKeyTRX = wallet.getKeyForCoin(coinTron);
             byte[] privateKeyTRXBytes = privateKeyTRX.data(); // Extract the raw private key data as a byte array
-             String privateKeyTRXBase64 = Base64.getEncoder().encodeToString(privateKeyTRXBytes); // Convert the byte
-            System.out.println("privateKprivateKeyTRXBase64eyTRXBytes  "+privateKeyTRXBase64);
+            //  String privateKeyTRXBase64 = Base64.getEncoder().encodeToString(privateKeyTRXBytes); // Convert the byte
+            // System.out.println("privateKprivateKeyTRXBase64eyTRXBytes  "+privateKeyTRXBase64);
                                                                                                  // array to a Base64
                                                                                                  // encoded string
             String hexTRXPrivateKey = bytesToHex(privateKeyTRXBytes);
@@ -133,6 +134,18 @@ public class CreateWallet extends ReactContextBaseJavaModule {
 
 
 
+                //*************************************  DogeCoin  *******************************************// 
+
+                String dogeCoinAdd = wallet.getAddressForCoin(coinDoge);
+                PrivateKey privateKeyseed = wallet.getKeyForCoin(coinDoge);
+                byte[] privateKeyDogeBytes = privateKeyseed.data();
+                String privateKeyDoge = bytesToHex(privateKeyDogeBytes);
+                JSONObject doge = new JSONObject();
+                doge.put("DOGE_address", dogeCoinAdd);
+                doge.put("DOGE_PrivateKey", privateKeyDoge);
+
+
+
            
             //*************************************  Final Response Object  *******************************************// 
 
@@ -141,6 +154,7 @@ public class CreateWallet extends ReactContextBaseJavaModule {
             result.put("ETH", eth);
             result.put("Tron", tron);
             result.put("BTC", btc);
+            result.put("DogeCoin", doge);
             successCallback.invoke(result.toString());
 
         } catch (Exception e) {

@@ -10,8 +10,6 @@ import com.facebook.react.bridge.Callback;
 import wallet.core.jni.HDWallet;
 import wallet.core.jni.CoinType;
 import wallet.core.jni.PrivateKey;
-// import wallet.core.jni.PublicKey;
-// import wallet.core.jni.Address;
 import org.bitcoinj.core.Sha256Hash;
 import java.security.MessageDigest;
 import java.util.Arrays;
@@ -64,8 +62,8 @@ public class CreateWallet extends ReactContextBaseJavaModule {
             HDWallet wallet = new HDWallet(mnemonics, "");
             CoinType coinEth = CoinType.ETHEREUM;
             CoinType coinBtc = CoinType.BITCOIN;
-            CoinType coinXRP = CoinType.XRP;
-            CoinType coinSui = CoinType.SUI;
+            // CoinType coinXRP = CoinType.XRP;
+            // CoinType coinSui = CoinType.SUI;
             CoinType coinTron = CoinType.TRON;
             CoinType coinDoge = CoinType.DOGECOIN;
 
@@ -136,11 +134,12 @@ public class CreateWallet extends ReactContextBaseJavaModule {
 
                 //*************************************  DogeCoin  *******************************************// 
 
-                String dogeCoinAdd = wallet.getAddressForCoin(coinDoge);
-                PrivateKey privateKeyseed = wallet.getKeyForCoin(coinDoge);
-                byte[] privateKeyDogeBytes = privateKeyseed.data();
-                String privateKeyDoge = bytesToHex(privateKeyDogeBytes);
-                JSONObject doge = new JSONObject();
+                String dogeCoinAdd = wallet.getAddressForCoin(coinDoge); //Generate Address
+                PrivateKey privateKeyseed = wallet.getKeyForCoin(coinDoge);  //raw private like wallet.core.jni.PrivateKey@a1aad90
+                byte[] privateKeyDogeBytes = privateKeyseed.data();   //in bytes
+                String privateKeyDoge = bytesToHex(privateKeyDogeBytes);  //convert
+
+                JSONObject doge = new JSONObject();   //create obj for response
                 doge.put("DOGE_address", dogeCoinAdd);
                 doge.put("DOGE_PrivateKey", privateKeyDoge);
 

@@ -57,13 +57,31 @@ class CreateWallet: NSObject {
         "BTC_address": btcAddress,
         "BTC_privateKey": btcWifPrivateKey
       ]
-
+      
+      
+      // DOGE
+      let dogeAddress = wallet.getAddressForCoin(coin: .dogecoin)
+      let dogePrivateKey = wallet.getKeyForCoin(coin: .dogecoin).data
+      let dogeHexPrivateKey = dogePrivateKey.hexString
+           
+//      let dgpv = wallet.getExtendedPrivateKey(purpose: .bip44, coin: .dogecoin, version: .dgpv)
+//      let dgub = wallet.getExtendedPublicKey(purpose: .bip44, coin: .dogecoin, version: .dgub)
+      
+      let doge: [String: String] = [
+        "DOGECOIN_address": dogeAddress,
+        "DOGECOIN_privateKey": dogeHexPrivateKey,
+//        "DOGECOIN_extendedPrivateKey": dgpv,
+//         "DOGECOIN_extendedPublicKey": dgub
+      ]
+      
+    
       // Final response
       let result: [String: Any] = [
         "mnemonics": mnemonics,
         "ETH": eth,
         "Tron": trx,
-        "BTC": btc
+        "BTC": btc,
+        "DOGE":doge
       ]
 
       successCallback([result])

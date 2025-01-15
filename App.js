@@ -14,6 +14,7 @@ import { decodeBase64 } from './src/components/Utils/methodUtils'
 const { CreateWallet, TronTransaction } = NativeModules;
 import { Buffer } from "buffer";
 import SlideButton from './src/components/screens/Slider'
+import { createDogecoinTransaction } from './src/components/Utils/dogeCoinUtils'
 
 const App = () => {
   const data23 = [
@@ -27,6 +28,14 @@ const App = () => {
   ];
   useEffect(() => {
     try {
+
+
+      const fromAddress = 'DBgHW1Shjyk91fusm9hm3HcryNBwaFwZbQ'; // Replace with sender's address
+      const toAddress = 'DRMvsostzbpnERSnSqQW5VTD6CEdRy4bsd';   // Replace with recipient's address
+      const amount = 1000000; // Amount in satoshis (1 DOGE = 1000000 satoshis)
+      const privateKey = '50a4b725ef35cb684ec4b4b2c658fc7f8dc0fc3c1013a507626bc4e17a439811'; // Replace with your private key in WIF format
+      createDogecoinTransaction(fromAddress, toAddress, amount, privateKey);
+
       // CreateWallet.generateMnemonics(
       //   (result) => {
       //     const walletInfo = JSON.parse(result);
@@ -42,20 +51,20 @@ const App = () => {
       // );
 
       const mnemonic = "lady attitude unaware region awake woman gain trim buddy cradle sorry brave";
-      const mnemonic2 =   "cart expect inner finger ugly wonder build region three inspire expose retreat"
-      CreateWallet.generateKeysForAllBlockchains(
-        mnemonic2,
-        (result) => {
-          console.log('Generated Keys and Addresses:', result);
-          // const ethPriv='0x' + Buffer.from(decodeBase64(res?.ETH_privateKey)).toString('hex');
-          // const ethAddress = res?.ETH_address
-          // console.log("ethPriv", ethPriv);
-          // console.log("ethAddress", ethAddress);
-        },
-        (error) => {
-          console.error('Error generating keys:', error);
-        }
-      );
+      // const mnemonic =   "cart expect inner finger ugly wonder build region three inspire expose retreat"
+      // CreateWallet.generateKeysForAllBlockchains(
+      //   mnemonic,
+      //   (result) => {
+      //     console.log('Generated Keys and Addresses:', result);
+      //     // const ethPriv='0x' + Buffer.from(decodeBase64(res?.ETH_privateKey)).toString('hex');
+      //     // const ethAddress = res?.ETH_address
+      //     // console.log("ethPriv", ethPriv);
+      //     // console.log("ethAddress", ethAddress);
+      //   },
+      //   (error) => {
+      //     console.error('Error generating keys:', error);
+      //   }
+      // );
 
       // TronTransaction.trxTransactions()
 
@@ -91,7 +100,7 @@ const App = () => {
       {/* <LineChartScreen/> */}
       {/* <MultiLineChart /> */}
       {/* <SlideButton/> */}
-      <Text>Cryp</Text>
+      <Text>Crypto</Text>
       {/* <MultipleLinesChartDecorator/> */}
       {/* <SvgMultiLineChart/> */}
       {/* <SvgPieChartCommon data={data23}/> */}

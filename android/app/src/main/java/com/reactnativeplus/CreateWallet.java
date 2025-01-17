@@ -67,7 +67,6 @@ public class CreateWallet extends ReactContextBaseJavaModule {
             CoinType coinTron = CoinType.TRON;
             CoinType coinDoge = CoinType.DOGECOIN;
 
-
             //*************************************  ETH  *******************************************// 
 
             String addressETH = wallet.getAddressForCoin(coinEth);

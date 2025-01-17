@@ -501,6 +501,8 @@ PODS:
     - IQKeyboardManagerSwift (= 6.5.16)
     - React-Core
     - React-RCTText
+  - RNCAsyncStorage (2.1.0):
+    - React-Core
   - RNReanimated (3.4.2):
     - DoubleConversion
     - FBLazyVector
@@ -612,6 +614,7 @@ DEPENDENCIES:
   - React-utils (from `../node_modules/react-native/ReactCommon/react/utils`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeKeyboardManager (from `../node_modules/react-native-keyboard-manager`)
+  - "RNCAsyncStorage (from `../node_modules/@react-native-async-storage/async-storage`)"
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - TrustWalletCore
@@ -724,6 +727,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   ReactNativeKeyboardManager:
     :path: "../node_modules/react-native-keyboard-manager"
+  RNCAsyncStorage:
+    :path: "../node_modules/@react-native-async-storage/async-storage"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNSVG:
@@ -788,6 +793,7 @@ SPEC CHECKSUMS:
   React-utils: fa59c9a3375fb6f4aeb66714fd3f7f76b43a9f16
   ReactCommon: dd03c17275c200496f346af93a7b94c53f3093a4
   ReactNativeKeyboardManager: 704d89bde3cb1e0f432bc273a44eec96eab9d90f
+  RNCAsyncStorage: cc6479c4acd84cc7004946946c8afe30b018184d
   RNReanimated: 726395a2fa2f04cea340274ba57a4e659bc0d9c1
   RNSVG: d7d7bc8229af3842c9cfc3a723c815a52cdd1105
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17

@@ -1,4 +1,4 @@
-import { NativeModules, StyleSheet, Text, View, ScrollView } from 'react-native'
+import { NativeModules, StyleSheet, Text, View, ScrollView, Button, ActivityIndicator, Image } from 'react-native'
 import React, { useEffect } from 'react'
 import Home from './src/components/screens/Home'
 import Portfolio from './src/components/screens/Portfolio'
@@ -15,8 +15,22 @@ const { CreateWallet, TronTransaction } = NativeModules;
 import { Buffer } from "buffer";
 import SlideButton from './src/components/screens/Slider'
 import { createDogecoinTransaction } from './src/components/Utils/dogeCoinUtils'
-
+import { Provider } from 'react-redux'
+import store from './src/Redux/store'
+import { useSelector, useDispatch } from 'react-redux'
+import { decrement, increamentByPayload, increment } from './src/Redux/Slices/counterSlice'
+import { adduser, removeUser } from './src/Redux/Slices/userSlice'
+import { fetchUsers } from './src/Redux/Slices/thunks'
 const App = () => {
+  const dispatch = useDispatch()
+  const { num } = useSelector((state) => (state.counter))
+  const { user, length, loading, error } = useSelector((state) => (state.userlist))
+  // console.log("nuwm", num)
+  // console.log("user", user)
+  // console.log("length", length)
+  // console.log("loading", loading)
+  // console.log("error", error)
+
   const data23 = [
     { key: 1, value: "50", color: '#F7931A', label: 'Bitcoin' },
     { key: 2, value: "30", color: '#ACD92F', label: 'Solana' },
@@ -34,7 +48,7 @@ const App = () => {
       const toAddress = 'DRMvsostzbpnERSnSqQW5VTD6CEdRy4bsd';   // Replace with recipient's address
       const amount = 1000000; // Amount in satoshis (1 DOGE = 1000000 satoshis)
       const privateKey = '50a4b725ef35cb684ec4b4b2c658fc7f8dc0fc3c1013a507626bc4e17a439811'; // Replace with your private key in WIF format
-      createDogecoinTransaction(fromAddress, toAddress, amount, privateKey);
+      // createDogecoinTransaction(fromAddress, toAddress, amount, privateKey);
 
       // CreateWallet.generateMnemonics(
       //   (result) => {
@@ -101,9 +115,38 @@ const App = () => {
       {/* <MultiLineChart /> */}
       {/* <SlideButton/> */}
       <Text>Crypto</Text>
+      <Button onPress={() => { dispatch(increment()) }} title='increment' />
+      <Button onPress={() => { dispatch(decrement()) }} title='decrement' />
+      <Button onPress={() => { dispatch(increamentByPayload(3)) }} title='incrementByPayload' />
+
+      <Button onPress={() => { dispatch(adduser(`USER${length + 1}`)) }} title='ADDUSER' />
+      <Button onPress={() => { dispatch(removeUser(0)) }} title='removeUser' />
+      <Button onPress={() => { dispatch(fetchUsers()); }} title='fetchUsers' />
       {/* <MultipleLinesChartDecorator/> */}
       {/* <SvgMultiLineChart/> */}
       {/* <SvgPieChartCommon data={data23}/> */}
+      {
+        error &&
+        <Text style={{ color: "red" }}>
+          {"error"}
+        </Text>}
+      <ActivityIndicator animating={!!loading} />
+      {!loading && <ScrollView
+      showsHorizontalScrollIndicator={!true}
+        horizontal={true}>
+        {user.map((item) => {
+            return (
+              <Image
+                key={item.id}
+                source={{ uri: item.image }} style={{
+                  width: 50,
+                  height: 50,
+                  borderRadius: 50,
+                  margin: 10
+                }} />
+            )
+          })}
+      </ScrollView>}
     </View>
   )
 }

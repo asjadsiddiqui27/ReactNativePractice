@@ -1,5 +1,7 @@
 const NAVIGATION = {
-Home:"Home",
-Menu:'Menu'
+    HOME: "Home",
+    MENU: 'Menu',
+    LOGIN: 'Login',
+    CHAT_SCREEN: "ChatScreen",
 }
 export default NAVIGATION;

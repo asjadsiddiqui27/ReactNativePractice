@@ -28,6 +28,7 @@ public class MainApplication extends Application implements ReactApplication {
           packages.add(new StringUtilsPackage());
           packages.add(new CreateWalletPackage());
           packages.add(new TronTransactionPackage());
+          packages.add(new ColorPalettePackage());
           return packages;
         }
 

@@ -1,5 +1,5 @@
-import { NativeModules, StyleSheet, Text, View, ScrollView, Button, ActivityIndicator, Image } from 'react-native'
-import React, { useEffect } from 'react'
+import { NativeModules, StyleSheet, Text, View, ScrollView, Button, ActivityIndicator, Image, Platform } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Home from './src/components/screens/Home'
 import Portfolio from './src/components/screens/Portfolio'
 import MultiLineChart from './src/components/screens/MultiLineChart'
@@ -11,7 +11,7 @@ import HooksPractice from './src/components/screens/HooksPractice'
 import MultipleLinesChartDecorator from './src/components/screens/Charts'
 import SvgMultiLineChart from './src/components/common/SvgMultiLineChart'
 import { decodeBase64 } from './src/components/Utils/methodUtils'
-const { CreateWallet, TronTransaction } = NativeModules;
+const { CreateWallet, TronTransaction,ColorPalette } = NativeModules;
 import { Buffer } from "buffer";
 import SlideButton from './src/components/screens/Slider'
 import { createDogecoinTransaction } from './src/components/Utils/dogeCoinUtils'
@@ -21,10 +21,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import { decrement, increamentByPayload, increment } from './src/Redux/Slices/counterSlice'
 import { adduser, removeUser } from './src/Redux/Slices/userSlice'
 import { fetchUsers } from './src/Redux/Slices/thunks'
+import messaging from '@react-native-firebase/messaging';
+import { firebase } from '@react-native-firebase/messaging'
+import FlashMessage, { showMessage } from 'react-native-flash-message'
+import { initializeAnalytics } from '@react-native-firebase/analytics'
+import analytics from '@react-native-firebase/analytics';
+import Navigator from './src/navigation/Navigator'
+
 const App = () => {
   const dispatch = useDispatch()
   const { num } = useSelector((state) => (state.counter))
   const { user, length, loading, error } = useSelector((state) => (state.userlist))
+    const [color, setColor] = useState('');
+  
   // console.log("nuwm", num)
   // console.log("user", user)
   // console.log("length", length)
@@ -40,10 +49,13 @@ const App = () => {
     { key: 6, value: 73, color: '#E84142', label: 'Tron' },
     { key: 7, value: 12, color: '#6B429B', label: 'Jupiter' },
   ];
+
   useEffect(() => {
     try {
-
-
+     
+      getInitialNotification()
+      getFcm();
+      requestUserPermission()
       const fromAddress = 'DBgHW1Shjyk91fusm9hm3HcryNBwaFwZbQ'; // Replace with sender's address
       const toAddress = 'DRMvsostzbpnERSnSqQW5VTD6CEdRy4bsd';   // Replace with recipient's address
       const amount = 1000000; // Amount in satoshis (1 DOGE = 1000000 satoshis)
@@ -108,6 +120,104 @@ const App = () => {
       console.error('Error:s', error);
     }
   }, [])
+
+  useEffect(() => {
+    const unsubscribe = messaging().onMessage(async remoteMessage => {
+        Alert.alert('A new FCM message arrived!', JSON.stringify(remoteMessage));
+    });
+
+    return unsubscribe;
+}, []);
+
+  async function getInitialNotification(){
+    //Handles when the app is launched via a notification Use this for cold starts (app is completely closed)
+    messaging()
+    .getInitialNotification()
+    .then(async notificationOpen => {
+      // console.log(
+      //   ' getInitialNotification:::::',
+      //   'push notification',
+      //   notificationOpen,
+      // );
+    });
+    
+    //if app has opened from a background state.
+    messaging().onNotificationOpenedApp(async remoteMessage => {
+      console.log("onNotificationOpenedApp", remoteMessage)
+    });
+
+
+       //work when app is in forground mode
+       messaging().onMessage(async remoteMessage => {
+        console.log('remoteMessage from forground --------------',remoteMessage, );
+  
+        showMessage({
+            position: 'top',
+            message:
+              remoteMessage.notification.body ||
+              remoteMessage.notification.title,
+            type: 'success',
+            duration: 4000,
+            backgroundColor: 'blue',
+            titleStyle: {
+              color:'white',
+              height: Platform.OS == 'android' ? 35 : 150,
+              marginTop: Platform.OS == 'android' ? 35 : 20,
+            },
+            style: {
+              marginTop: Platform.OS == 'ios' ? 55 : 30,
+              marginHorizontal: 5,
+              borderRadius: 10,
+              borderWidth: 0,
+              paddingTop: -25
+            },
+            onPress: async () => {
+                console.log("onPress Event:::::")
+            },
+          });
+       
+      });
+
+
+  }
+
+  async function requestUserPermission() {
+    const authorizationStatus = await messaging().requestPermission();
+    if (authorizationStatus === messaging.AuthorizationStatus.AUTHORIZED || 
+        authorizationStatus === messaging.AuthorizationStatus.PROVISIONAL) {
+      // console.log('Notification permission granted');
+    } else {
+      // console.log('Notification permission denied');
+    }
+  }
+
+    useEffect(() => {
+      // ColorPalette.getDominantColorFromUrl('https://www.iconarchive.com/download/i109534/cjdowner/cryptocurrency-flat/Ethereum-ETH.1024.png')
+      //   .then(colorRes => {
+      //     // console.log('Dominant color:', colorRes);
+      //     // setColor(colorRes) // Output will be an integer representing the color
+      //   })
+      //   .catch(error => {
+      //     console.error('Error:', error);
+      //   });
+    }, []);
+
+  const getFcm = async () => {
+    try {
+      const fcmToken = await firebase.messaging().getToken();
+      // console.log('fcm token:::::::', fcmToken);
+    } catch (error) {
+      // console.log('fcm tokencatchcatch:::::::', error);
+    }
+  }
+
+  if(true) return(
+    <View style={{flex:1}}>
+<Navigator/>
+    </View>
+  )
+
+
   return (
     <View style={[{ flex: 1, justifyContent: "center", alignItems: "center" }]}>
       {/* <Portfolio /> */}
@@ -115,7 +225,13 @@ const App = () => {
       {/* <MultiLineChart /> */}
       {/* <SlideButton/> */}
       <Text>Crypto</Text>
-      <Button onPress={() => { dispatch(increment()) }} title='increment' />
+      <Button onPress={async () => {
+        dispatch(increment())
+     await   analytics().logEvent("increment", {
+      id: '1',
+      name: 'App Opened',
+    });
+        }} title='increment' />
       <Button onPress={() => { dispatch(decrement()) }} title='decrement' />
       <Button onPress={() => { dispatch(increamentByPayload(3)) }} title='incrementByPayload' />
 
@@ -131,22 +247,23 @@ const App = () => {
           {"error"}
         </Text>}
       <ActivityIndicator animating={!!loading} />
-      {!loading && <ScrollView
-      showsHorizontalScrollIndicator={!true}
+      {/* {!loading && <ScrollView
+        showsHorizontalScrollIndicator={!true}
         horizontal={true}>
         {user.map((item) => {
-            return (
-              <Image
-                key={item.id}
-                source={{ uri: item.image }} style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 50,
-                  margin: 10
-                }} />
-            )
-          })}
-      </ScrollView>}
+          return (
+            <Image
+              key={item.id}
+              source={{ uri: item.image }} style={{
+                width: 55,
+                height: 55,
+                borderRadius: 50,
+                margin: 10,
+              }} />
+          )
+        })}
+      </ScrollView>} */}
+      <FlashMessage position="top" />
     </View>
   )
 }

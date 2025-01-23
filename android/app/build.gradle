@@ -1,7 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: "com.facebook.react"
 apply plugin: 'kotlin-android'
-
+apply plugin: 'com.google.gms.google-services'
 
 
 /**
@@ -72,8 +72,18 @@ dependencies {
     // implementation('org.web3j:core:4.2.0-android') // Uncomment if needed 
     implementation 'org.bitcoinj:bitcoinj-core:0.16.4'
     implementation 'org.bouncycastle:bcprov-jdk15to18:1.70'
-
+    // implementation platform('com.google.firebase:firebase-bom:33.8.0')
+    implementation 'com.google.android.gms:play-services-auth'
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}")
+    // implementation("com.google.firebase:firebase-analytics")
+    // implementation ('com.google.firebase:firebase-messaging')
+
+implementation 'com.github.bumptech.glide:glide:4.15.1'
+annotationProcessor 'com.github.bumptech.glide:compiler:4.15.1'
+
+implementation 'androidx.palette:palette:1.0.0'
+
+
     debugImplementation("com.facebook.flipper:flipper-network-plugin:${FLIPPER_VERSION}") {
         exclude group:'com.squareup.okhttp3', module:'okhttp'
     }

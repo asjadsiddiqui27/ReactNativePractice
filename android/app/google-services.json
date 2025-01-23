@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "249691164410",
+    "project_id": "reactnativeplus-55e3b",
+    "storage_bucket": "reactnativeplus-55e3b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:249691164410:android:07375d9a5d1c3ea3564343",
+        "android_client_info": {
+          "package_name": "com.reactnativeplus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "249691164410-mtm29jsdoko113gg39b3hf6m3cablaft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOs6jUTuxno0kRJlwtclAGLh7e-uIH7s0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "249691164410-mtm29jsdoko113gg39b3hf6m3cablaft.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "249691164410-h8ls16gil1qh0lnjv3t72oikou1ogdgb.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.reactnativeplus"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

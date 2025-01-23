@@ -1,20 +1,26 @@
 import {
     Home,
-    Menu
+    Menu,
+    Login,
+    ChatScreen,
 } from "../components/screens/index"
 import NAVIGATION from "./navigation"
 
-const screens = [
-    { name: NAVIGATION.Home, component: Home },
-    { name: NAVIGATION.Menu, component: Menu },
-]
 
-export default Routes = () => {
+
+const screens = [
+    { name: NAVIGATION.HOME, component: Home },
+    { name: NAVIGATION.MENU, component: Menu },
+    { name: NAVIGATION.LOGIN, component: Login },
+    { name: NAVIGATION.CHAT_SCREEN, component: ChatScreen },
+];
+
+export default Routes = (Stack) => {
     return (
         <>
             {
                 screens.map((comp) => (
-                    <Stack.Screen name={comp.name} component={comp.component} />
+                    <Stack.Screen  key={comp.name}  name={comp.name} component={comp.component} />
                 ))
             }
         </>

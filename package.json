@@ -20,6 +20,7 @@
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
     "@reduxjs/toolkit": "^2.5.0",
+    "@sentry/react-native": "^6.5.0",
     "axios": "^1.7.9",
     "buffer": "^6.0.3",
     "d3-scale": "^4.0.2",

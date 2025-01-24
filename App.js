@@ -11,7 +11,6 @@ import HooksPractice from './src/components/screens/HooksPractice'
 import MultipleLinesChartDecorator from './src/components/screens/Charts'
 import SvgMultiLineChart from './src/components/common/SvgMultiLineChart'
 import { decodeBase64 } from './src/components/Utils/methodUtils'
-const { CreateWallet, TronTransaction,ColorPalette } = NativeModules;
 import { Buffer } from "buffer";
 import SlideButton from './src/components/screens/Slider'
 import { createDogecoinTransaction } from './src/components/Utils/dogeCoinUtils'
@@ -27,12 +26,22 @@ import FlashMessage, { showMessage } from 'react-native-flash-message'
 import { initializeAnalytics } from '@react-native-firebase/analytics'
 import analytics from '@react-native-firebase/analytics';
 import Navigator from './src/navigation/Navigator'
+import * as Sentry from '@sentry/react-native';
+
+const { CreateWallet, TronTransaction,ColorPalette } = NativeModules;
 
 const App = () => {
   const dispatch = useDispatch()
   const { num } = useSelector((state) => (state.counter))
   const { user, length, loading, error } = useSelector((state) => (state.userlist))
     const [color, setColor] = useState('');
+
+Sentry.init({
+  dsn: 'https://7fc00f7c6a332d9da093420dce19f1e4@o4508692995702784.ingest.us.sentry.io/4508692997668864',
+
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  // spotlight: __DEV__,
+});
   
   // console.log("nuwm", num)
   // console.log("user", user)
@@ -267,7 +276,7 @@ const App = () => {
     </View>
   )
 }
-
-export default App
+export default Sentry.wrap(App);
+// export default App
 
 const styles = StyleSheet.create({})

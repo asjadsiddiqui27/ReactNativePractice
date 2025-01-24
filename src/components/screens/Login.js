@@ -4,7 +4,13 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import database from '@react-native-firebase/database';
 
+import * as Sentry from '@sentry/react-native'; // Correct placement - at the top
 
+// ... other imports if any
+
+Sentry.init({
+  dsn: "https://7fc00f7c6a332d9da093420dce19f1e4@o4508692995702784.ingest.us.sentry.io/4508692997668864",
+});
 
 
 const Login = (props, { navigation }) => {
@@ -133,6 +139,7 @@ const Login = (props, { navigation }) => {
       <Button title="SignUp" onPress={handleSignUp} />
       <Button title="Sign Out" onPress={handleSignOut} />
       <ActivityIndicator animating={loader} size="large" />
+      <Button title='Try!' onPress={ () => { Sentry.captureException(new Error('First error')) }}/>
     </View>
   )
 }
